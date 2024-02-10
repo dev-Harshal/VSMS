@@ -1,0 +1,58 @@
+{% extends "staff_base.html" %}
+
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Handled Enquirys</h1>
+      </div><!-- End Page Title -->
+  
+      <section class="section">
+        <div class="row">
+          <div class="col-lg-12">
+  
+            <div class="card">
+              <div class="card-body">
+                <!-- Table with stripped rows -->
+                <table class="table datatable">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Contact No</th>
+                      <th >Message</th>
+                      <th>Enquiry Date</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for obj in enquirys %}
+                    <tr>
+                      <td>{{obj.name}}</td>
+                      <td>{{obj.email}}</td>
+                      <td>{{obj.contact_number}}</td>
+                      <td>{{obj.message}}</td>
+                      <td>{{obj.created_on}}</td>    
+                      <td>
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="enquiry_id" value="{{obj.id}}">
+                            <button type="submit" class="btn btn-success">{{obj.status}}</button>
+                        </form>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                <!-- End Table with stripped rows -->
+  
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+</main>
+
+{% endblock content %}

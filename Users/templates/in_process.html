@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>In Process Request</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+
+          <div class="card">
+            <div class="card-body">
+              <!-- Table with stripped rows -->
+              <table class="table datatable">
+                <thead>
+                  <tr>
+                    <th>#Service</th>
+                    <th>Reg Number</th>
+                    <th>Vehicle Name</th>
+                    <th data-type="date">Service Request</th>
+                    <th>Delivery</th>
+                    <th>Status</th>
+                    <th>Details</th>
+                    <th>Bill</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for obj in services %}
+                  <tr>
+                    <td>{{obj.service_number}}</td>
+                    <td>{{obj.vehicle_reg_no}}</td>
+                    <td>{{obj.vehicle_brand}} {{obj.vehicle_name}}</td>
+                    <td>{{obj.service_date|date}} {{obj.service_time|upper}}</td>
+
+                    {% if obj.need_delivery == False %}
+                    <td><h5><span class="badge bg-danger"><i class="ri-close-fill"></i> NO</span></h5></td>
+                    {% else %}
+                    <td><h5><span class="badge bg-success"><i class="ri-check-fill"></i> YES</span></h5></td>
+                    {% endif %}
+
+                    {% if obj.status == "Pending" %}
+                    <td><h5><span class="badge bg-danger">{{obj.status}}</span></5></td>
+                    {% elif obj.status == "In Process" %}
+                    <td><h5><span class="badge bg-warning text-dark">{{obj.status}}</span></span></td>
+                    {% elif obj.status == "Completed" %}
+                    <td><h5><span class="badge bg-primary">{{obj.status}}</span></td>
+                    {% elif obj.status == "Work Completed" %}
+                    <td><h5><span class="badge bg-info text-dark">{{obj.status}}</span></td>
+                    {% else %}
+                    <td><h5><span class="badge bg-success">{{obj.status}}</span></td>
+                    {% endif %}
+
+                    <td><button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalDialogScrollable{{obj.id}}">
+                            <i class="bi bi-eye-fill"></i>
+                          </button>
+                        
+                          <div class="modal fade" id="modalDialogScrollable{{obj.id}}" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-scrollable">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title">Service Details</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Service Id</strong></div>
+                                    <div class="col-lg-7 col-md-6"><strong>{{obj.service_number}}</strong></div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Request Date</strong></div>
+                                    <div class="col-lg-7 col-md-6">{{obj.request_date}}</div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Customer Name</strong></div>
+                                    <div class="col-lg-7 col-md-6">{{obj.user_id.first_name}} {{obj.user_id.last_name}}</div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Contact Number</strong></div>
+                                    <div class="col-lg-7 col-md-6">+91 {{obj.user_id.phone_number}}</div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Category</strong></div>
+                                    <div class="col-lg-7 col-md-6">{{obj.category}}</div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Vehicle Name</strong></div>
+                                    <div class="col-lg-7 col-md-6">{{obj.vehicle_brand}} {{obj.vehicle_name}}</div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Vehicle No</strong></div>
+                                    <div class="col-lg-7 col-md-6">{{obj.vehicle_reg_no}}</div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Pickup Date</strong></div>
+                                    <div class="col-lg-7 col-md-6">{{obj.service_date}}</div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Pickup Time</strong></div>
+                                    <div class="col-lg-7 col-md-6">{{obj.service_time}}</div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Pickup Address</strong></div>
+                                    <div class="col-lg-7 col-md-6">{{obj.pickup_address}}</div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Home Delivery</strong></div>
+                                    {% if obj.need_delivery == True %}
+                                    <div class="col-lg-7 col-md-6"><strong>YES</strong></div>
+                                    {% else %}
+                                    <div class="col-lg-7 col-md-6"><strong>NO</strong></div>
+                                    {% endif %}
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>STATUS</strong></div>
+                                    {% if obj.status == "In Process" %}
+                                    <div class="col-lg-7 col-md-6"><h5><span class="badge bg-warning text-dark">{{obj.status|upper}}</span></div>
+                                    {% elif obj.status == "Completed" %}
+                                    <div class="col-lg-7 col-md-6"><h5><span class="badge bg-primary">{{obj.status|upper}}</span></div>
+                                    {% elif obj.status == "Work Completed" %}
+                                    <div class="col-lg-7 col-md-6"><h5><span class="badge bg-info text-dark">{{obj.status|upper}}</span></div>
+                                    {% else %}
+                                    <div class="col-lg-7 col-md-6"><h5><span class="badge bg-danger">{{obj.status|upper}}</span></div>
+                                    {% endif %}
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Delivery Date</strong></div>
+                                    {% if obj.complete_date == None %}
+                                    <div class="col-lg-7 col-md-6"><h5><span class="badge bg-secondary">Pending</span></div>
+                                    {% else %}
+                                    <div class="col-lg-7 col-md-6"><h5><span class="badge bg-secondary">{{obj.complete_date}}</span></div>
+                                    {% endif %}
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Bill</strong></div>
+                                    <div class="col-lg-7 col-md-6"><h5><span class="badge bg-warning text-dark">{{obj.total_amount|upper}} &#8377;</span></div>
+                                  </div>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        {% if obj.status == "Completed" and obj.payment_status == False %}
+                        <td>
+                          <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalDialog1Scrollable{{obj.id}}">
+                            <i class="bi bi-eye-fill"></i> Bill
+                          </button>
+                      
+                        <div class="modal fade" id="modalDialog1Scrollable{{obj.id}}" tabindex="-1">
+                          <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title">Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <form method="post">
+                                    <div class="col-12">
+                                      <label for="inputNanme4" class="form-label">Parts Charge</label>
+                                      <input type="text" name="parts_charge" class="form-control" value="{{obj.parts_charge}}" id="inputNanme4" disabled>
+                                    </div>
+                                    <div class="col-12">
+                                      <label for="inputEmail4" class="form-label">Service Charge</label>
+                                      <input type="text" name="service_charge" class="form-control" value="{{obj.service_charge}}" id="inputEmail4" disabled>
+                                    </div>
+                                    <div class="col-12">
+                                      <label for="inputPassword4" class="form-label">Other Charge</label>
+                                      <input type="text" name="other_charge" class="form-control" value="{{obj.other_charge}}" id="inputPassword4" disabled>
+                                    </div>
+                                    <div class="col-12">
+                                      <label for="inputAddress" class="form-label">Total Amount</label>
+                                      <input type="text" class="form-control" id="inputAddress" value="{{obj.total_amount}}" disabled>
+                                    </div>
+                                    <hr>
+                                  </form><!-- Vertical Form -->
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="id" value="{{obj.id}}">
+                                    <button type="submit" class="btn btn-success">Pay</button>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>  
+                        </td>
+                        {% elif obj.status == "Completed" and obj.payment_status == True  %}
+                        <td><button type="button" class="btn btn-success" disabled>Payed</button></td>
+                        {% else %}
+                        <td><button type="button" class="btn btn-warning" disabled>
+                          <i class="bi bi-eye-fill"></i> Bill
+                        </button></td>
+                        {% endif %}
+                        
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+{% endblock content %}

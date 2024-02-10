@@ -1,0 +1,174 @@
+
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Dashboard</h1>
+      </div><!-- End Page Title -->
+      <div class="col-lg-12">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"></h5>
+
+            <!-- Slides with controls -->
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img src="{% static "assets/img/banner_1.jpg" %}" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                  <img src="{% static "assets/img/banner_2.jpg" %}" class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                  <img src="{% static "assets/img/banner_3.jpg" %}" class="d-block w-100" alt="...">
+                </div>
+              </div>
+
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+
+            </div><!-- End Slides with controls -->
+
+          </div>
+        </div>
+      <section class="section">
+        <div class="row">
+  
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Annual Expense</h5>
+  
+                <!-- Line Chart -->
+                <div id="lineChart1"></div>
+  
+                <script>
+                  document.addEventListener("DOMContentLoaded", () => {
+                    const total = {{home.total_amounts|safe}}
+                    const unique = {{home.unique_months|safe}}
+                    new ApexCharts(document.querySelector("#lineChart1"), {
+                      series: [{
+                        name: "Expense",
+                        data: total
+                      }],
+                      chart: {
+                        height: 350,
+                        type: 'line',
+                        zoom: {
+                          enabled: false
+                        }
+                      },
+                      dataLabels: {
+                        enabled: false
+                      },
+                      stroke: {
+                        curve: 'straight'
+                      },
+                      grid: {
+                        row: {
+                          colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                          opacity: 0.5
+                        },
+                      },
+                      xaxis: {
+                        categories: unique,
+                      }
+                    }).render();
+                  });
+                </script>
+                <!-- End Line Chart -->
+  
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Annual Expense Comparison</h5>
+  
+                <!-- Column Chart -->
+                <div id="columnChart"></div>
+  
+                <script>
+                  document.addEventListener("DOMContentLoaded", () => {
+                    const unique = {{home.unique_months|safe}}
+                    const two = {{home.two|safe}}
+                    const four = {{home.four|safe}}
+                    const bus = {{home.bus|safe}}
+                    const truck = {{home.truck|safe}}
+                    new ApexCharts(document.querySelector("#columnChart"), {
+                      series: [{
+                        name: '2 Wheeler',
+                        data: two
+                      }, {
+                        name: '4 Wheeler',
+                        data: four
+                      }, {
+                        name: 'Bus',
+                        data: bus
+                      },{
+                        name: 'Truck',
+                        data: truck
+                      }],
+                      chart: {
+                        type: 'bar',
+                        height: 350
+                      },
+                      plotOptions: {
+                        bar: {
+                          horizontal: false,
+                          columnWidth: '55%',
+                          endingShape: 'rounded'
+                        },
+                      },
+                      dataLabels: {
+                        enabled: false
+                      },
+                      stroke: {
+                        show: true,
+                        width: 2,
+                        colors: ['transparent']
+                      },
+                      xaxis: {
+                        categories: unique,
+                      },
+                      yaxis: {
+                        title: {
+                          text: '$ (thousands)'
+                        }
+                      },
+                      fill: {
+                        opacity: 1
+                      },
+                      tooltip: {
+                        y: {
+                          formatter: function(val) {
+                            return "$ " + val + " thousands"
+                          }
+                        }
+                      }
+                    }).render();
+                  });
+                </script>
+                <!-- End Column Chart -->
+  
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+
+</main>
+{% endblock content %}

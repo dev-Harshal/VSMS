@@ -1,0 +1,752 @@
+{% extends "staff_base.html" %}
+
+
+{% block content %}
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Dashboard</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+      <div class="row">
+
+        <!-- Left side columns -->
+        <div class="col-lg-8">
+          <div class="row">
+
+            <!-- Sales Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">New Requests <span></span></h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon bg-warning rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-exclamation-triangle text-danger"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{data.pending}}</h6>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Sales Card -->
+
+            <!-- Revenue Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card revenue-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">On Going</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon bg-danger rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-tools text-warning"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{data.process}}</h6>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Revenue Card -->
+
+            <!-- Customers Card -->
+            <div class="col-xxl-4 col-xl-12">
+
+              <div class="card info-card customers-card">
+
+                <div class="card-body">
+                  <h5 class="card-title">Completed</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon bg-success rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="bi bi-check text-light"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6>{{data.complete}}</h6>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div><!-- End Customers Card -->
+            
+            <!-- Customers Card -->
+            <div class="col-xxl-4 col-xl-12">
+
+                <div class="card info-card customers-card">
+  
+                  <div class="card-body">
+                    <h5 class="card-title">Customers</h5>
+  
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="bi bi-people"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6>{{data.customer}}</h6> 
+                      </div>
+                    </div>
+  
+                  </div>
+                </div>
+  
+              </div><!-- End Customers Card -->
+            
+            <!-- Customers Card -->
+            <div class="col-xxl-4 col-xl-12">
+
+                <div class="card info-card customers-card">
+  
+                  <div class="card-body">
+                    <h5 class="card-title">Delivered</h5>
+  
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon bg-light rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="bi bi-truck-flatbed text-primary"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6>{{data.delivered}}</h6> 
+                      </div>
+                    </div>
+  
+                  </div>
+                </div>
+  
+              </div><!-- End Customers Card -->
+
+            <!-- Revenue Card -->
+            <div class="col-xxl-4 col-md-6">
+                <div class="card info-card revenue-card">
+  
+                  <div class="card-body">
+                    <h5 class="card-title">Revenue</h5>
+  
+                    <div class="d-flex align-items-center">
+                      <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                        <i class="bi bi-currency-rupee"></i>
+                      </div>
+                      <div class="ps-3">
+                        <h6>&#x20B9;{{data.revenue}}</h6>  
+                      </div>
+                    </div>
+                  </div>
+  
+                </div>
+              </div><!-- End Revenue Card -->
+            
+
+            <!-- Reports -->
+
+            <div class="col-12">
+              <div class="card">
+
+                <div class="card-body">
+                  <h5 class="card-title">Vehicle Comparison</h5>
+
+                  <canvas id="barChart" style="max-height: 400px;"></canvas>
+              <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                    const compare = {{data.compare | safe}}
+                  new Chart(document.querySelector('#barChart'), {
+                    type: 'bar',
+                    data: {
+                      labels: ['2 Wheeler', '4 Wheeler', 'Bus', 'Truck'],
+                      datasets: [{
+                        label: 'Comparison Chart',
+                        data: compare,
+                        backgroundColor: [
+                          'rgba(255, 99, 132, 0.2)',
+                          'rgba(255, 159, 64, 0.2)',
+                          'rgba(255, 205, 86, 0.2)',
+                          'rgba(75, 192, 192, 0.2)',
+                          'rgba(54, 162, 235, 0.2)',
+                          'rgba(153, 102, 255, 0.2)',
+                          'rgba(201, 203, 207, 0.2)'
+                        ],
+                        borderColor: [
+                          'rgb(255, 99, 132)',
+                          'rgb(255, 159, 64)',
+                          'rgb(255, 205, 86)',
+                          'rgb(75, 192, 192)',
+                          'rgb(54, 162, 235)',
+                          'rgb(153, 102, 255)',
+                          'rgb(201, 203, 207)'
+                        ],
+                        borderWidth: 1
+                      }]
+                    },
+                    options: {
+                      scales: {
+                        y: {
+                          beginAtZero: true
+                        }
+                      }
+                    }
+                  });
+                });
+              </script>
+                  <!-- End Line Chart -->
+
+                </div>
+
+              </div>
+            </div><!-- End Reports -->
+            
+
+            <div class="col-lg-12">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Montly Sales</h5>
+    
+                  <!-- Line Chart -->
+                  <div id="lineChart1"></div>
+    
+                  <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                      const total = {{home.total_amounts|safe}}
+                      const unique = {{home.unique_months|safe}}
+                      new ApexCharts(document.querySelector("#lineChart1"), {
+                        series: [{
+                          name: "Expense",
+                          data: total
+                        }],
+                        chart: {
+                          height: 350,
+                          type: 'line',
+                          zoom: {
+                            enabled: false
+                          }
+                        },
+                        dataLabels: {
+                          enabled: false
+                        },
+                        stroke: {
+                          curve: 'straight'
+                        },
+                        grid: {
+                          row: {
+                            colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                            opacity: 0.5
+                          },
+                        },
+                        xaxis: {
+                          categories: unique,
+                        }
+                      }).render();
+                    });
+                  </script>
+                  <!-- End Line Chart -->
+    
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+            <!-- Recent Sales -->
+            <div class="col-12">
+              <div class="card recent-sales overflow-auto">
+
+
+                <div class="card-body">
+                  <h5 class="card-title">Sales Comparison</h5>
+                  <div id="barChart2"></div>
+                  <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                        const sales_data = {{data.compare_sale|safe}};
+                      new ApexCharts(document.querySelector("#barChart2"), {
+                        series: [{
+                          data: sales_data
+                        }],
+                        chart: {
+                          type: 'bar',
+                          height: 350
+                        },
+                        plotOptions: {
+                          bar: {
+                            borderRadius: 4,
+                            horizontal: true,
+                          }
+                        },
+                        dataLabels: {
+                          enabled: false
+                        },
+                        xaxis: {
+                          categories: ["2 Wheeler","4 Wheeler","Bus","Truck"],
+                        }
+                      }).render();
+                    });
+                  </script>
+
+                </div>
+
+              </div>
+            </div><!-- End Recent Sales -->
+
+
+
+          </div>
+        </div><!-- End Left side columns -->
+
+        <!-- Right side columns -->
+        <div class="col-lg-4">
+
+
+            <!-- Website Traffic -->
+            <div class="card">
+
+                <div class="card-body pb-0">
+                <h5 class="card-title">Pending Requests</h5>
+
+                <div id="trafficChart1" style="min-height: 400px;" class="echart"></div>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", () => {
+                        const two = {{data.pending_chart.two|safe}}
+                        const four = {{data.pending_chart.four|safe}}
+                        const bus = {{data.pending_chart.bus|safe}}
+                        const truck = {{data.pending_chart.truck|safe}}
+                    echarts.init(document.querySelector("#trafficChart1")).setOption({
+                        tooltip: {
+                        trigger: 'item'
+                        },
+                        legend: {
+                        top: '5%',
+                        left: 'center'
+                        },
+                        series: [{
+                        name: 'Access From',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            label: {
+                            show: true,
+                            fontSize: '18',
+                            fontWeight: 'bold'
+                            }
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        data: [{
+                            value: two,
+                            name: '2 Wheeler'
+                            },
+                            {
+                            value: four,
+                            name: '4 Wheeler'
+                            },
+                            {
+                            value: bus,
+                            name: 'Bus'
+                            },
+                            {
+                            value: truck,
+                            name: 'Truck'
+                            },
+                        ]
+                        }]
+                    });
+                    });
+                </script>
+
+                </div>
+            </div><!-- End Website Traffic -->
+
+          <!-- Budget Report -->
+          <div class="card">
+
+            <div class="card-body pb-0">
+            <h5 class="card-title">In Process Requests</h5>
+
+            <div id="trafficChart2" style="min-height: 400px;" class="echart"></div>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                    const two = {{data.process_chart.two|safe}}
+                    const four = {{data.process_chart.four|safe}}
+                    const bus = {{data.process_chart.bus|safe}}
+                    const truck = {{data.process_chart.truck|safe}}
+                echarts.init(document.querySelector("#trafficChart2")).setOption({
+                    tooltip: {
+                    trigger: 'item'
+                    },
+                    legend: {
+                    top: '5%',
+                    left: 'center'
+                    },
+                    series: [{
+                    name: 'Access From',
+                    type: 'pie',
+                    radius: ['40%', '70%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        show: false,
+                        position: 'center'
+                    },
+                    emphasis: {
+                        label: {
+                        show: true,
+                        fontSize: '18',
+                        fontWeight: 'bold'
+                        }
+                    },
+                    labelLine: {
+                        show: false
+                    },
+                    data: [{
+                        value: two,
+                        name: '2 Wheeler'
+                        },
+                        {
+                        value: four,
+                        name: '4 Wheeler'
+                        },
+                        {
+                        value: bus,
+                        name: 'Bus'
+                        },
+                        {
+                        value: truck,
+                        name: 'Truck'
+                        },
+                    ]
+                    }]
+                });
+                });
+            </script>
+
+            </div>
+        </div><!-- End Website Traffic -->
+
+          <!-- Website Traffic -->
+          <div class="card">
+
+            <div class="card-body pb-0">
+              <h5 class="card-title">Delivered Requests</h5>
+
+              <div id="trafficChart" style="min-height: 400px;" class="echart"></div>
+
+              <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                    const two = {{data.delivered_chart.two|safe}}
+                    const four = {{data.delivered_chart.four|safe}}
+                    const bus = {{data.delivered_chart.bus|safe}}
+                    const truck = {{data.delivered_chart.truck|safe}}
+                  echarts.init(document.querySelector("#trafficChart")).setOption({
+                    tooltip: {
+                      trigger: 'item'
+                    },
+                    legend: {
+                      top: '5%',
+                      left: 'center'
+                    },
+                    series: [{
+                      name: 'Access From',
+                      type: 'pie',
+                      radius: ['40%', '70%'],
+                      avoidLabelOverlap: false,
+                      label: {
+                        show: false,
+                        position: 'center'
+                      },
+                      emphasis: {
+                        label: {
+                          show: true,
+                          fontSize: '18',
+                          fontWeight: 'bold'
+                        }
+                      },
+                      labelLine: {
+                        show: false
+                      },
+                      data: [{
+                          value: two,
+                          name: '2 Wheeler'
+                        },
+                        {
+                          value: four,
+                          name: '4 Wheeler'
+                        },
+                        {
+                          value: bus,
+                          name: 'Bus'
+                        },
+                        {
+                          value: truck,
+                          name: 'Truck'
+                        }
+                      ]
+                    }]
+                  });
+                });
+              </script>
+
+            </div>
+          </div><!-- End Website Traffic -->
+
+
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Annual Expense Comparison</h5>
+  
+                <!-- Column Chart -->
+                <div id="columnChart"></div>
+  
+                <script>
+                  document.addEventListener("DOMContentLoaded", () => {
+                    const unique = {{home.unique_months|safe}}
+                    const two = {{home.two|safe}}
+                    const four = {{home.four|safe}}
+                    const bus = {{home.bus|safe}}
+                    const truck = {{home.truck|safe}}
+                    new ApexCharts(document.querySelector("#columnChart"), {
+                      series: [{
+                        name: '2 Wheeler',
+                        data: two
+                      }, {
+                        name: '4 Wheeler',
+                        data: four
+                      }, {
+                        name: 'Bus',
+                        data: bus
+                      },{
+                        name: 'Truck',
+                        data: truck
+                      }],
+                      chart: {
+                        type: 'bar',
+                        height: 350
+                      },
+                      plotOptions: {
+                        bar: {
+                          horizontal: false,
+                          columnWidth: '55%',
+                          endingShape: 'rounded'
+                        },
+                      },
+                      dataLabels: {
+                        enabled: false
+                      },
+                      stroke: {
+                        show: true,
+                        width: 2,
+                        colors: ['transparent']
+                      },
+                      xaxis: {
+                        categories: unique,
+                      },
+                      yaxis: {
+                        title: {
+                          text: '$ (thousands)'
+                        }
+                      },
+                      fill: {
+                        opacity: 1
+                      },
+                      tooltip: {
+                        y: {
+                          formatter: function(val) {
+                            return "$ " + val + " thousands"
+                          }
+                        }
+                      }
+                    }).render();
+                  });
+                </script>
+                <!-- End Column Chart -->
+  
+              </div>
+            </div>
+          </div>
+
+        </div><!-- End Right side columns -->
+        <div class="col-lg-12">
+  
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">All Records</h5>
+  
+              <!-- Table with stripped rows -->
+              <table class="table datatable">
+                <thead>
+                  <tr>
+                    <th>#Service</th>
+                    <th>Vehicle Reg Number</th>
+                    <th>Vehicle Name</th>
+                    <th data-type="date">Service Request</th>
+                    <th data-type="date">Service Complete</th>
+                    <th>Details</th>
+                    <th>View Bill</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for obj in home.services %}
+                  <tr>
+                    <td>{{obj.service_number}}</td>
+                    <td>{{obj.vehicle_reg_no}}</td>
+                    <td>{{obj.vehicle_brand}} {{obj.vehicle_name}}</td>
+                    <td>{{obj.service_date|date}}</td>
+                    <td>{{obj.complete_date|date}}</td>
+  
+                    <td><button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalDialogScrollable{{obj.id}}">
+                            <i class="bi bi-eye-fill"></i>
+                          </button>
+                          
+
+                          <div class="modal fade" id="modalDialogScrollable{{obj.id}}" tabindex="-1">
+                            <div class="modal-dialog modal-dialog-scrollable">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <h5 class="modal-title">Details</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Service Id</strong></div>
+                                    <div class="col-lg-7 col-md-6"><strong>{{obj.service_number}}</strong></div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Request Date</strong></div>
+                                    <div class="col-lg-7 col-md-6">{{obj.request_date}}</div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Customer Name</strong></div>
+                                    <div class="col-lg-7 col-md-6">{{obj.user_id.first_name}} {{obj.user_id.last_name}}</div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Contact Number</strong></div>
+                                    <div class="col-lg-7 col-md-6">+91 {{obj.user_id.phone_number}}</div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Category</strong></div>
+                                    <div class="col-lg-7 col-md-6">{{obj.category}}</div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Vehicle Name</strong></div>
+                                    <div class="col-lg-7 col-md-6">{{obj.vehicle_brand}} {{obj.vehicle_name}}</div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Vehicle No</strong></div>
+                                    <div class="col-lg-7 col-md-6">{{obj.vehicle_reg_no}}</div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Pickup Date</strong></div>
+                                    <div class="col-lg-7 col-md-6">{{obj.service_date}}</div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Pickup Time</strong></div>
+                                    <div class="col-lg-7 col-md-6">{{obj.service_time}}</div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Pickup Address</strong></div>
+                                    <div class="col-lg-7 col-md-6">{{obj.pickup_address}}</div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Home Delivery</strong></div>
+                                    {% if obj.need_delivery == True %}
+                                    <div class="col-lg-7 col-md-6"><strong>YES</strong></div>
+                                    {% else %}
+                                    <div class="col-lg-7 col-md-6"><strong>NO</strong></div>
+                                    {% endif %}
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>STATUS</strong></div>
+                                    {% if obj.status == "In Process" %}
+                                    <div class="col-lg-7 col-md-6"><h5><span class="badge bg-danger">{{obj.status|upper}}</span></div>
+                                    {% else %}
+                                    <div class="col-lg-7 col-md-6"><h5><span class="badge bg-success">{{obj.status|upper}}</span></div>
+                                    {% endif %}
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Delivery Date</strong></div>
+                                    <div class="col-lg-7 col-md-6"><h5><span class="badge bg-secondary">{{obj.complete_date|upper}}</span></div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-lg-5 col-md-6 label "><strong>Bill</strong></div>
+                                    <div class="col-lg-7 col-md-6"><h5><span class="badge bg-warning text-dark">{{obj.total_amount|upper}} &#8377;</span></div>
+                                  </div>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#modalDialog1Scrollable{{obj.id}}">
+                            <i class="bi bi-eye-fill"></i> Bill
+                          </button>
+                      
+                        <div class="modal fade" id="modalDialog1Scrollable{{obj.id}}" tabindex="-1">
+                          <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title">Bill Details</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <form method="post">
+                                    <div class="col-12">
+                                      <label for="inputNanme4" class="form-label">Parts Charge</label>
+                                      <input type="text" name="parts_charge" class="form-control" value="{{obj.parts_charge}}" id="inputNanme4" disabled>
+                                    </div>
+                                    <div class="col-12">
+                                      <label for="inputEmail4" class="form-label">Service Charge</label>
+                                      <input type="text" name="service_charge" class="form-control" value="{{obj.service_charge}}" id="inputEmail4" disabled>
+                                    </div>
+                                    <div class="col-12">
+                                      <label for="inputPassword4" class="form-label">Other Charge</label>
+                                      <input type="text" name="other_charge" class="form-control" value="{{obj.other_charge}}" id="inputPassword4" disabled>
+                                    </div>
+                                    <div class="col-12">
+                                      <label for="inputAddress" class="form-label">Total Amount</label>
+                                      <input type="text" class="form-control" id="inputAddress" value="{{obj.total_amount}}" disabled>
+                                    </div>
+                                    <hr>
+                                  </form><!-- Vertical Form -->
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>  
+                        </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              <!-- End Table with stripped rows -->
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+
+
+{% endblock content %}
