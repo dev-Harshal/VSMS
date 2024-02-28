@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib import messages
 from Staff.data import StaffHomeData1, staffHomeData
 from Users.decorators import staff_custom_login_required
-from Users.mail import create_notification, send_mail_to_the_user
+from Users.mail import create_notification, send_mail_to_the_user,send_sms
 from Users.models import Enquiry, Service, Users
 from django.db.models import Q
 # Create your views here.
@@ -90,6 +90,8 @@ def pendingServiceReg(request):
         service.status = 'In Process'
         create_notification(service.user_id,service,'In Process')
         service.save()
+        message = f"""Work in process for Service Id:{service.service_number}"""
+        send_sms(message,service.user_id.phone_number)
         return redirect(reverse('in-process-reg'))
     services = Service.objects.filter(status='Pending').all()
     return render(request,'pending_req.html',context = {'services':services})
@@ -122,6 +124,7 @@ def inProgressServiceReg(request):
         """
             send_mail_to_the_user(service.user_id.email,message)
             create_notification(service.user_id,service,'Completed')
+            send_sms(message,service.user_id.phone_number)
             service.save()
             return redirect(reverse('completed-reg'))
         else:
@@ -149,6 +152,7 @@ def completedServiceReg(request):
 
         MOTORA    
         """
+            send_sms(message,service.user_id.phone_number)
             send_mail_to_the_user(service.user_id.email,message)
             create_notification(request.user,service,'Payment')
             service.save()
@@ -168,6 +172,7 @@ def completedServiceReg(request):
 
         MOTORA    
         """
+            send_sms(message,service.user_id.phone_number)
             send_mail_to_the_user(service.user_id.email,message)
             service.save()
             return redirect(reverse('delivered-reg'))

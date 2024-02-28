@@ -10,7 +10,7 @@ from django.db.models import Q
 from Users.data import UserHomeData
 #User Defined Modules
 from .models import *
-from .mail import create_notification, send_mail_to_the_user
+from .mail import create_notification, send_mail_to_the_user,send_sms
 from .decorators import user_custom_login_required
 #-----------------------------------------------------------------------------
 # Create your views here.
@@ -45,6 +45,7 @@ def index(request):
             MOTORA    
             """
         send_mail_to_the_user(email,message)
+        send_sms(message,contact_number)
         messages.add_message(request, messages.INFO, "Support team will contact you shortly. Thank you!")
         return redirect (reverse('index') + '#contact')
     else:
@@ -75,6 +76,7 @@ def registerUser(request):
                     Thank You for Registering with MOTORA.
                     MOTORA    
                     """
+        send_sms(message,phone_number)
         send_mail_to_the_user(email,message)
         return redirect(reverse('login'))
     else:
@@ -175,6 +177,7 @@ def contact(request):
             MOTORA    
             """
         send_mail_to_the_user(email,message)
+        send_sms(message,contact_number)
         messages.add_message(request, messages.INFO, "Support team will contact you shortly. Thank you!")
         return redirect (reverse('contact'))
     else:    
@@ -215,6 +218,7 @@ def bookService(request):
 
         MOTORA    
         """
+        send_sms(message,user_id.phone_number)
         send_mail_to_the_user(str(user_id.email),message)
         create_notification(request.user,service,'Booking Confirmed')
         return redirect(reverse('in_process'))
@@ -237,6 +241,7 @@ def in_process(request):
 
         MOTORA    
         """
+        send_sms(message,service.user_id.phone_number)
         send_mail_to_the_user(service.user_id.email,message)
         return redirect(reverse('in_process'))
 
